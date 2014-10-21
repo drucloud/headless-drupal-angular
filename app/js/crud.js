@@ -26,13 +26,6 @@ headlessDrupal.controller('NodeLoader', function($scope, $resource) {
     }
   }
 
-  // Initial dummy content for a "node":
-  $scope.node = {
-    'disclaimer': [{'value': 'This data is bundled into app.js, not loaded from the backend.'}],
-    'title': [{'value': 'Headless Drupal + Angular.js'}],
-    'body': [{'value': '<p>This demo shows how you can use a dynamic front-end (Angular.js) and a Drupal back-end to power a great user experience. Go ahead and click the number field below to start loading nodes.</p>'}]
-  }
-
   // Load a node helper function.
   function loadNode(nid, callback) {
     var node = nodeService.get({'nodeId': nid}, function() {
@@ -113,22 +106,52 @@ headlessDrupal.controller('NodeCreator', function($scope, $resource) {
   }
 });
 
+//Load user
+headlessDrupal.controller('UserLoader', function($scope, $resource) {
+  var nodeService = $resource(mySite +'user/:userId',
+    { nodeId: '@userId' },
+    {
+      get: {
+        method:'GET',
+        transformRequest: function(data, headersGetter) {
+                headersGetter()['Accept'] = 'application/hal+json'
+                headersGetter()['Authorization'] = 'Basic ' + passphase
+        }
+      }
+    });
+
+  $scope.load = function() {
+    if (Number.isInteger($scope.userId) && $scope.userId > 0) {
+      loadNode($scope.userId)
+    }
+  }
+
+  // Load a node helper function.
+  function loadNode(uid, callback) {
+    var user = nodeService.get({'userId': uid}, function() {
+      $scope.user = user
+      if (typeof callback === "function") {
+        // Call it, since we have confirmed it is callable
+        callback(uid);
+      }
+    });
+  }
+});
+
 // Viewloader
 headlessDrupal.controller('ViewLoader', function($scope, $resource) {
   var path = ':viewpath'.replace(/%2F/g, "/")
-  //var path = decodeURIComponent(':viewpath').replace(/\//, '%2F')
   var request_url = mySite + path 
-  var viewService = $resource( request_url.replace(/%2F/g, "/"),
-  //var viewService = $resource(mySite + 'rest/views/content',
+  var viewService = $resource( request_url.replace(/%2F/g, "/"), //encode problem not solved, but still functioning
 //Empty for view GET
     {},
     {
       get: {
         method:'GET',
-//        transformRequest: function(data, headersGetter) {
-//                headersGetter()['Accept'] = 'application/hal+json',
-//	        headersGetter()['Authorization'] = 'Basic ' + passphase
-//        }
+        transformRequest: function(data, headersGetter) {
+                headersGetter()['Accept'] = 'application/hal+json',
+	        headersGetter()['Authorization'] = 'Basic ' + passphase
+        }
       }
     });
 
