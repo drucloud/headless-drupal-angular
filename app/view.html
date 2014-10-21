@@ -14,8 +14,7 @@
   <script src="bower_components/bootstrap/js/collapse.js"></script>
 <!--  <script src="bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>-->
   <script src="js/config.js"></script>
-<!--  <script src="js/crud.js"></script>-->
-<script src="js/view.js"></script>
+  <script src="js/crud.js"></script>
 </head>
 <body ng-controller="ViewLoader">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -41,7 +40,7 @@
         <div class="node-content" ng-bind-html="view.body[0].value">
         </div>
         <div id="view-to-load">
-          Show me view with path<input type="text" value="rest/views/content" name="viewpath" ngMinlength="5" ng-model="viewpath" ng-change="load()">
+          Show me view with path<input type="text" name="viewpath" ngMinlength="5" ng-model="viewpath" ng-change="load()">
           Path to query {{viewpath}}
         </div>
       </div>
@@ -59,7 +58,7 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse">
           <div class="panel-body">
-            <pre>{{ node | json }}</pre>
+            <pre>{{ view | json }}</pre>
           </div>
         </div>
       </div>
