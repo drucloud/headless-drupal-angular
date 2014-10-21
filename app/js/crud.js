@@ -107,7 +107,7 @@ headlessDrupal.controller('NodeCreator', function($scope, $resource) {
       if (typeof callback === "function") {
         // Call it, since we have confirmed it is callable
         callback(response);
-        $scope.message = response;
+        $scope.message = "node created";
       }
     }, function(error) {
        //Error handling

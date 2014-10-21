@@ -38,15 +38,12 @@
     <div class="jumbotron">
       <div class="container">
         <h2>Input your new node details</h2>
-        <div id="node-to-load">
-          Show me node #<input type="number" value="0" min="1" ng-model="nodeId" ng-change="load()">
+        <div>
+          Title :  <input type="text" ng-model="nodetitle"> 
         </div>
         <div>
-          Title :  {{nodetitle}}<input type="text" ng-model="nodetitle"> 
-        </div>
-        <div>
-          Body  :  {{nodebody}}<br>
-          <input type="textarea" ng-model="nodebody">
+          Body  :  <br>
+          <textarea rows="4" cols="50" ng-model="nodebody"></textarea>
         </div>
         <br>
         <button ng-click="post()">
