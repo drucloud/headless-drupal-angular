@@ -138,6 +138,90 @@ headlessDrupal.controller('UserLoader', function($scope, $resource) {
   }
 });
 
+headlessDrupal.controller('UserCreator', function($scope, $resource) {
+  var userService = $resource(mySite +'entity/user',
+    { }, //No param for post
+    {
+      save : {
+        method:'POST',
+        headers: {
+            "Content-Type" : 'application/hal+json',
+	    "Authorization" : 'Basic ' + passphase,
+        },
+      }
+    }
+  );
+  //Form the data and 
+  $scope.post = function() {
+  $scope.udata = {
+	       "_links":
+	       {
+		   "type":
+		   {
+		       "href": mySite + "rest/type/user/user"
+		   }
+	       },
+	       "langcode":
+	       [
+		   {
+		       "value": "en"
+		   }
+	       ],
+	       "name":
+	       [
+		   {
+		       "value": $scope.username
+		   }
+	       ],
+	       "pass":
+	       [
+		   {
+		       "value": $scope.password
+		   }
+	       ],
+	       "mail":
+	       [
+		   {
+		       "value": $scope.email
+		   }
+	       ],
+	       "status":
+	       [
+		   {
+		       "value": "1"
+		   }
+	       ],
+	       "roles":
+	       [
+		   {
+		       "target_id": "editor"
+		   },
+	           { //It need to put here to assign role
+			"target_id": "authenticated"
+		   }
+	       ]
+    	}
+
+    if ($scope.udata) {
+      createUser($scope.udata)
+    }
+  }
+
+  // create a node helper function.
+  function createUser(udata, callback) {
+    var user = userService.save({}, udata, function(response) {
+      if (typeof callback === "function") {
+        // Call it, since we have confirmed it is callable
+        callback(response);
+        $scope.message = "user created";
+      }
+    }, function(error) {
+       //Error handling
+       $scope.error = error
+    });
+  }
+});
+
 // Viewloader
 headlessDrupal.controller('ViewLoader', function($scope, $resource) {
   var path = ':viewpath'.replace(/%2F/g, "/")
