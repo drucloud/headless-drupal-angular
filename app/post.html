@@ -15,6 +15,7 @@
 <!--  <script src="bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>-->
   <script src="js/config.js"></script>
   <script src="js/crud.js"></script>
+  <script src="js/angular-base64-upload.js"></script>
 <!--<script src="js/post.js"></script>-->
 </head>
 <body ng-controller="NodeCreator">
@@ -44,6 +45,13 @@
         <div>
           Body  :  <br>
           <textarea rows="4" cols="50" ng-model="nodebody"></textarea>
+        </div>
+        <div>
+          Imaeg name :  <input type="text" ng-model="nodeimagename"> 
+        </div>
+        <div>
+          image  :  <br>
+	  <input type="file" name="uploadField" ng-model="nodeimage" base-sixty-four-input />
         </div>
         <br>
         <button ng-click="post()">

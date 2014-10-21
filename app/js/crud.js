@@ -6,7 +6,8 @@
 var headlessDrupal = angular.module('headlessDrupal', [
   'ngRoute',
   'ngResource',
-  'ngSanitize']);
+  'ngSanitize',
+  'naif.base64']);
 
 headlessDrupal.controller('NodeLoader', function($scope, $resource) {
   var nodeService = $resource(mySite +'node/:nodeId',
@@ -66,7 +67,7 @@ headlessDrupal.controller('NodeCreator', function($scope, $resource) {
             "_links" : {
                 "type":
                 {
-                "href": mySite + "rest/type/node/page"
+                "href": mySite + "rest/type/node/article"
                 }
             },
         "langcode" : [
@@ -83,7 +84,14 @@ headlessDrupal.controller('NodeCreator', function($scope, $resource) {
             "summary": "",
             "lang": "en"
             }
-          ]
+          ],
+        "field_image":
+	  [
+	    {
+		    "value": $scope.nodeimage.base64,
+		    "filename": $scope.nodeimage.filename,
+	    }
+	  ]
         };
 
     if ($scope.ndata) {
@@ -94,6 +102,7 @@ headlessDrupal.controller('NodeCreator', function($scope, $resource) {
   // create a node helper function.
   function createNode(ndata, callback) {
     var node = nodeService.save({}, ndata, function(response) {
+	$scope.test = $scope.nodeimage;
       if (typeof callback === "function") {
         // Call it, since we have confirmed it is callable
         callback(response);
